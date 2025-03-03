@@ -37,7 +37,7 @@ prompt_temp=ChatPromptTemplate.from_template(
 def create_vectors_embeddings():
     
     if "Vectors" not in st.session_state:
-        st.session_state.embeddings=OllamaEmbeddings(model='gemma2:2b')
+        st.session_state.embeddings=OllamaEmbeddings(model='mistral:latests')
         st.session_state.loader=PyPDFDirectoryLoader('Pdf')
         st.session_state.docs=st.session_state.loader.load()
         st.session_state.text_splitter=RecursiveCharacterTextSplitter(chunk_size=1000,chunk_overlap=200)
