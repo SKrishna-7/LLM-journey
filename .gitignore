@@ -1,2 +1,4 @@
 .env
 venv/
+
+.\RAGDoc-Q&A-with-GROQ-LLama3\Q&A\chroma_db\
