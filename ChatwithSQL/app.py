@@ -41,13 +41,14 @@ if not api_key:
 llm=ChatGroq(groq_api_key=api_key,model_name="Llama3-8b-8192",streaming=True)
 
 @st.cache_resource(ttl="2h")
-def configure_db(db_uri,local_path,mysql_host=None,mysql_user=None,mysql_password=None,mysql_db=None):
+def configure_db(db_uri,local_path=None,mysql_host=None,mysql_user=None,mysql_password=None,mysql_db=None):
     if db_uri==LOCALDB:
         # dbfilepath=(Path(__file__).parent/"student.db").absolute()
         if not local_path:
             st.error("Please provide the Local DB path to configure.")
             st.stop()
-        dbfilepath=local_path
+        # dbfilepath=local_path
+        dbfilepath = Path(local_path).absolute()
         print(dbfilepath)
         creator = lambda: sqlite3.connect(f"file:{dbfilepath}?mode=ro", uri=True)
         return SQLDatabase(create_engine("sqlite:///", creator=creator))
@@ -58,7 +59,7 @@ def configure_db(db_uri,local_path,mysql_host=None,mysql_user=None,mysql_passwor
         return SQLDatabase(create_engine(f"mysql+mysqlconnector://{mysql_user}:{mysql_password}@{mysql_host}/{mysql_db}"))   
     
 if db_uri==MYSQL:
-    db=configure_db(db_uri,mysql_host,mysql_user,mysql_password,mysql_db)
+    db=configure_db(db_uri,None,mysql_host,mysql_user,mysql_password,mysql_db)
 else:
     db=configure_db(db_uri,local_path)
 
