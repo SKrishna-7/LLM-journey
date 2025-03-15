@@ -44,6 +44,9 @@ llm=ChatGroq(groq_api_key=api_key,model_name="Llama3-8b-8192",streaming=True)
 def configure_db(db_uri,local_path,mysql_host=None,mysql_user=None,mysql_password=None,mysql_db=None):
     if db_uri==LOCALDB:
         # dbfilepath=(Path(__file__).parent/"student.db").absolute()
+        if not local_path:
+            st.error("Please provide the Local DB path to configure.")
+            st.stop()
         dbfilepath=local_path
         print(dbfilepath)
         creator = lambda: sqlite3.connect(f"file:{dbfilepath}?mode=ro", uri=True)
